@@ -1,18 +1,24 @@
 defmodule AmazonIAP do
-  @moduledoc """
-  Documentation for AmazonIAP.
-  """
+  alias HTTPoison.Response
 
-  @doc """
-  Hello world.
+  require AmazonIAP.ErrorStatus, as: ErrorStatus
 
-  ## Examples
+  def verify_receipt(user_id, receipt_id) do
+    build_rvs_url(user_id, receipt_id)
+    |> HTTPoison.get
+    |> parse_response()
+  end
 
-      iex> AmazonIAP.hello
-      :world
+  def build_rvs_url(user_id, receipt_id) do
+    config = Application.get_all_env(:amazon_iap)
+    "#{config[:url_base]}/version/#{config[:version]}/verifyReceiptId/developer/config[:secrets]/user/#{user_id}/receiptId/#{receipt_id}"
+  end
 
-  """
-  def hello do
-    :world
+  def parse_response({:error, error}), do: {:error, ErrorStatus.http_request_failed, error}
+  def parse_response({:ok, %Response{status_code: 200, body: body}}) do
+    Poison.decode!(body)
+  end
+  def parse_response({:ok, %Response{status_code: status}}) do
+    {:error, status}
   end
 end
