@@ -1,8 +1,7 @@
-defmodule AmazonIAPTest do
+defmodule AmazonIAP.RVSResponseTest do
   use ExUnit.Case
   alias AmazonIAP.RVSResponse
-  require AmazonIAP.ErrorStatus, as: ErrorStatus
-  doctest AmazonIAP
+  doctest AmazonIAP.RVSResponse
 
   setup_all do
     json = %{
@@ -34,20 +33,14 @@ defmodule AmazonIAPTest do
       term_sku: nil,
       test_transaction: true
     }
-    %{json_string: json_string, struct: struct}
+    %{json: json, json_string: json_string, struct: struct}
   end
 
-  test "when http request was failed" do
-    assert AmazonIAP.parse_response({:error, :error}) == {:error, ErrorStatus.http_request_failed, :error}
+  test "to_struct/1 converts a json into RVSResponse", %{json: json, struct: struct} do
+    assert RVSResponse.to_struct(json) == struct
   end
 
-  test "parse succeeded response", %{json_string: json_string, struct: struct} do
-    response = %HTTPoison.Response{status_code: 200, body: json_string}
-    assert AmazonIAP.parse_response({:ok, response}) == {:ok, struct}
-  end
-
-  test "parse failed response" do
-    response = %HTTPoison.Response{status_code: 400}
-    assert AmazonIAP.parse_response({:ok, response}) == {:error, 400}
+  test "from_json/1 converts a json into RVSResponse", %{json_string: json_string, struct: struct} do
+    assert RVSResponse.from_json(json_string) == struct
   end
 end
