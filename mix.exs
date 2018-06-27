@@ -20,8 +20,8 @@ defmodule AmazonIAP.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:httpoison, "~> 1.2.0"},
-      {:poison, "~> 3.1"},
+      {:httpoison, "~> 1.2.0", override: true},
+      {:poison, "~> 3.1", override: true},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
     ]
   end
