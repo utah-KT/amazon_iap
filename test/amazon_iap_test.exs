@@ -34,7 +34,22 @@ defmodule AmazonIAPTest do
       term_sku: nil,
       test_transaction: true
     }
-    %{json_string: json_string, struct: struct}
+    user_id = "l3HL7XppEMhrOGDnur9-ulvqomrSg6qyODKmah76lJU="
+    receipt_id = "q1YqVbJSyjH28DGPKChw9c0o8nd3ySststQtzSkrzM8tCk43K6z0d_HOTcwwN8vxCrVV0lEqBmpJzs_VS8xNrMrP0ytOzC3ISdXLTCzQS87PKy7NTUwCcvOLEvPSU4GqS5SsDHSUUoB6DE3MDQyNTIzNTM0sTZRqAQ"
+    %{json_string: json_string, struct: struct, user_id: user_id, receipt_id: receipt_id}
+  end
+
+  test "verify receipt", %{user_id: user_id, receipt_id: receipt_id} do
+    {status, _} = AmazonIAP.verify_receipt(user_id, receipt_id)
+    assert status == :ok
+  end
+
+  test "invalid receipt", %{user_id: user_id} do
+    assert AmazonIAP.verify_receipt(user_id, "invalid") == {:error, ErrorStatus.invalid_receipt_id}
+  end
+
+  test "invalid user_id", %{receipt_id: receipt_id} do
+    assert AmazonIAP.verify_receipt("invalid", receipt_id) == {:error, ErrorStatus.invalid_user_id}
   end
 
   test "when http request was failed" do
