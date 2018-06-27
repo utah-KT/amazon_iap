@@ -5,6 +5,8 @@ defmodule AmazonIAPTest do
   doctest AmazonIAP
 
   setup_all do
+    user_id = "l3HL7XppEMhrOGDnur9-ulvqomrSg6qyODKmah76lJU="
+    receipt_id = "q1YqVbJSyjH28DGPKChw9c0o8nd3ySststQtzSkrzM8tCk43K6z0d_HOTcwwN8vxCrVV0lEqBmpJzs_VS8xNrMrP0ytOzC3ISdXLTCzQS87PKy7NTUwCcvOLEvPSU4GqS5SsDHSUUoB6DE3MDQyNTIzNTM0sTZRqAQ"
     json = %{
       "betaProduct": false,
       "cancelDate": nil,
@@ -13,13 +15,14 @@ defmodule AmazonIAPTest do
       "productType": "CONSUMABLE",
       "purchaseDate": 1399070221749,
       "quantity": 1,
-      "receiptId": "wE1EG1gsEZI9q9UnI5YoZ2OxeoVKPdR5bvPMqyKQq5Y=:1:11",
+      "receiptId": receipt_id,
       "renewalDate": nil,
       "term": nil,
       "termSku": nil,
       "testTransaction": true
     }
     json_string = Poison.encode!(json)
+    raw_receipt = Base.encode64(json_string)
     struct = %RVSResponse{
       beta_product: false,
       cancel_date: nil,
@@ -28,15 +31,19 @@ defmodule AmazonIAPTest do
       product_type: "CONSUMABLE",
       purchase_date: 1399070221749,
       quantity: 1,
-      receipt_id: "wE1EG1gsEZI9q9UnI5YoZ2OxeoVKPdR5bvPMqyKQq5Y=:1:11",
+      receipt_id: receipt_id,
       renewal_date: nil,
       term: nil,
       term_sku: nil,
       test_transaction: true
     }
-    user_id = "l3HL7XppEMhrOGDnur9-ulvqomrSg6qyODKmah76lJU="
-    receipt_id = "q1YqVbJSyjH28DGPKChw9c0o8nd3ySststQtzSkrzM8tCk43K6z0d_HOTcwwN8vxCrVV0lEqBmpJzs_VS8xNrMrP0ytOzC3ISdXLTCzQS87PKy7NTUwCcvOLEvPSU4GqS5SsDHSUUoB6DE3MDQyNTIzNTM0sTZRqAQ"
-    %{json_string: json_string, struct: struct, user_id: user_id, receipt_id: receipt_id}
+    %{json_string: json_string, struct: struct, user_id: user_id, receipt_id: receipt_id, raw_receipt: raw_receipt}
+  end
+
+  test "verify raw receipt", %{user_id: user_id, raw_receipt: raw_receipt} do
+    require IEx; IEx.pry
+    {status, _} = AmazonIAP.verify_raw_receipt(user_id, raw_receipt)
+    assert status == :ok
   end
 
   test "verify receipt", %{user_id: user_id, receipt_id: receipt_id} do
