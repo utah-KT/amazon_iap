@@ -1,6 +1,6 @@
 # AmazonIAP
 
-**TODO: Add description**
+Amazon IAP receipt verifier.
 
 ## Installation
 
