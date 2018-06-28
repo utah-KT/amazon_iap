@@ -41,7 +41,6 @@ defmodule AmazonIAPTest do
   end
 
   test "verify raw receipt", %{user_id: user_id, raw_receipt: raw_receipt} do
-    require IEx; IEx.pry
     {status, _} = AmazonIAP.verify_raw_receipt(user_id, raw_receipt)
     assert status == :ok
   end
