@@ -25,7 +25,7 @@ defmodule AmazonIAP do
   @spec build_rvs_url(binary, binary) :: binary
   def build_rvs_url(user_id, receipt_id) do
     config = Application.get_all_env(:amazon_iap)
-    "#{config[:url_base]}/version/#{config[:version]}/verifyReceiptId/developer/config[:secrets]/user/#{user_id}/receiptId/#{receipt_id}"
+    "#{config[:url_base]}/version/#{config[:version]}/verifyReceiptId/developer/#{config[:secrets]}/user/#{user_id}/receiptId/#{receipt_id}"
   end
 
   @spec parse_response({:error, HTTPoison.Error.t} | {:ok, Response.t}) :: {:ok, RVSResponse.t} | {:error, integer} | {:error, integer, HTTPoison.Error.t}
