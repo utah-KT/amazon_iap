@@ -22,7 +22,8 @@ defmodule AmazonIAP.Mixfile do
     [
       {:httpoison, "~> 1.2.0 or ~> 0.13.0"},
       {:poison, "~> 3.1"},
-      {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
+      {:dialyxir, "~> 0.5", only: :dev, runtime: false},
+      {:ex_doc, "~> 0.19", only: :dev}
     ]
   end
 end
