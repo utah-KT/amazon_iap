@@ -1,4 +1,7 @@
 defmodule AmazonIAP.RVSResponse do
+  @moduledoc """
+  Struct for RVS(Receipt Verification Service) response.
+  """
 
   defstruct [
     :beta_product, :cancel_date, :parent_product_id,

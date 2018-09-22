@@ -3,6 +3,12 @@ defmodule AmazonIAP do
   alias AmazonIAP.RVSResponse
   require AmazonIAP.ErrorStatus, as: ErrorStatus
 
+
+  @doc """
+  Verify encoded receipt.
+
+  Returns `{:ok, response}` if the receipt is valid, `{:error, status_code}` or `{:error, status_code, httpoison_error_reason}` otherwise.
+  """
   @spec verify_raw_receipt(binary, binary) :: {:ok, RVSResponse.t} | {:error, integer} | {:error, integer, HTTPoison.Error.t}
   def verify_raw_receipt(user_id, receipt) do
     with {:ok, decoded} <- Base.decode64(receipt, ignore: :whitespace),
@@ -15,6 +21,11 @@ defmodule AmazonIAP do
     end
   end
 
+  @doc """
+  Verify receipt by user_id and receipt_id.
+
+  Returns `{:ok, response}` if the receipt is valid, `{:error, status_code}` or `{:error, status_code, httpoison_error_reason}` otherwise.
+  """
   @spec verify_receipt(binary, binary) :: {:ok, RVSResponse.t} | {:error, integer} | {:error, integer, HTTPoison.Error.t}
   def verify_receipt(user_id, receipt_id) do
     build_rvs_url(user_id, receipt_id)
