@@ -3,6 +3,8 @@
 Amazon IAP receipt verifier.
 
 [![CircleCI](https://circleci.com/gh/utah-KT/amazon_iap.svg?style=svg)](https://circleci.com/gh/utah-KT/amazon_iap)
+[![hex.pm version](https://img.shields.io/hexpm/v/amazon_iap.svg)](https://hex.pm/packages/amazon_iap)
+[![hex.pm](https://img.shields.io/hexpm/l/amazon_iap.svg)](https://github.com/utah-KT/amazon_iap/blob/master/LICENSE)
 
 ## Installation
 
