@@ -10,8 +10,9 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - run: /usr/local/tomcat/bin/startup.sh
       - run: mix local.hex --force
-      - run: mix deps.get
       - run: mix local.rebar --force
-      - run: mix test
+      - run: mix deps.get
+      - run: |
+          /usr/local/tomcat/bin/startup.sh
+          mix test
