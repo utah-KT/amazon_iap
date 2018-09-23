@@ -11,7 +11,8 @@ jobs:
     steps:
       - checkout
       - run: /usr/local/tomcat/bin/startup.sh
-      - run: mix local.hex --force
-      - run: mix deps.get
-      - run: mix local.rebar --force
-      - run: mix test
+      - run: curl localhost:8080
+      # - run: mix local.hex --force
+      # - run: mix deps.get
+      # - run: mix local.rebar --force
+      # - run: mix test
