@@ -6,7 +6,12 @@ defmodule AmazonIAP.Mixfile do
       app: :amazon_iap,
       version: "0.1.0",
       elixir: "~> 1.5",
-      deps: deps()
+      deps: deps(),
+      description: "Amazon IAP(In-App Purchasing) receipt verifier.",
+      package: [
+        links: %{"GitHub" => "https://github.com/utah-KT/amazon_iap"},
+        licenses: ["MIT"]
+      ]
     ]
   end
 

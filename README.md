@@ -2,6 +2,8 @@
 
 Amazon IAP receipt verifier.
 
+[![CircleCI](https://circleci.com/gh/utah-KT/amazon_iap.svg?style=svg)](https://circleci.com/gh/utah-KT/amazon_iap)
+
 ## Installation
 
 If you want to use AmazonIAP, edit your `mix.exs` file and add it as a dependency:
