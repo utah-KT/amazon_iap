@@ -9,4 +9,3 @@ RUN apt-get install -y elixir=1.6.6-2
 RUN wget https://amazonadsi-a.akamaihd.net/public/Amazon-Mobile-App-SDK-by-Platform/Amazon-Android-SDKs.zip
 RUN unzip Amazon-Android-SDKs.zip
 RUN mv `find ./Amazon-Android-SDKs -name RVSSandbox.war` /usr/local/tomcat/webapps/
-
