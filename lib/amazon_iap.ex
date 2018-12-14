@@ -42,7 +42,12 @@ defmodule AmazonIAP do
   @spec parse_response({:error, HTTPoison.Error.t} | {:ok, Response.t}) :: {:ok, RVSResponse.t} | {:error, integer} | {:error, integer, HTTPoison.Error.t}
   def parse_response({:error, error}), do: {:error, ErrorStatus.http_request_failed, error}
   def parse_response({:ok, %Response{status_code: 200, body: body}}) do
-    {:ok, RVSResponse.from_json(body)}
+    case RVSResponse.from_json(body) do
+      %RVSResponse{cancel_date: cancel_date} when is_integer(cancel_date) and cancel_date > 0 ->
+        {:error, ErrorStatus.invalid_receipt, :cancelled}
+      resp ->
+        {:ok, resp}
+    end
   end
   def parse_response({:ok, %Response{status_code: status}}) do
     {:error, status}

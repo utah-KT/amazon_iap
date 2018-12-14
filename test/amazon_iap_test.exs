@@ -22,6 +22,7 @@ defmodule AmazonIAPTest do
       "testTransaction": true
     }
     json_string = Poison.encode!(json)
+    cancelled_json_string = Poison.encode!(%{json | "cancelDate": DateTime.utc_now() |> DateTime.to_unix()})
     raw_receipt = Base.encode64(json_string)
     struct = %RVSResponse{
       beta_product: false,
@@ -37,7 +38,7 @@ defmodule AmazonIAPTest do
       term_sku: nil,
       test_transaction: true
     }
-    %{json_string: json_string, struct: struct, user_id: user_id, receipt_id: receipt_id, raw_receipt: raw_receipt}
+    %{json_string: json_string, cancelled_json_string: cancelled_json_string, struct: struct, user_id: user_id, receipt_id: receipt_id, raw_receipt: raw_receipt}
   end
 
   test "verify raw receipt", %{user_id: user_id, raw_receipt: raw_receipt} do
@@ -65,6 +66,11 @@ defmodule AmazonIAPTest do
   test "parse succeeded response", %{json_string: json_string, struct: struct} do
     response = %HTTPoison.Response{status_code: 200, body: json_string}
     assert AmazonIAP.parse_response({:ok, response}) == {:ok, struct}
+  end
+
+  test "parse cancelled response", %{cancelled_json_string: cancelled_json_string} do
+    response = %HTTPoison.Response{status_code: 200, body: cancelled_json_string}
+    assert AmazonIAP.parse_response({:ok, response}) == {:error, ErrorStatus.invalid_receipt, :cancelled}
   end
 
   test "parse failed response" do
